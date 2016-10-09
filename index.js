@@ -36,7 +36,8 @@ defaults.child = {
     "vertical-align": "middle",
     "max-height": "100%",
     "overflow-x": "hidden",
-    "overflow-y": "auto"
+    "overflow-y": "auto",
+    "white-space": "normal"
 };
 
 module.exports = postcss.plugin("postcss-modal", plugin);

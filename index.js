@@ -1,12 +1,12 @@
 /**
  * Created by Ivan on 09.10.2016.
  */
-
-var postcss = require("postcss"),
+"use strict";
+let postcss = require("postcss"),
     objToRule = require("./common/obj-to-rule"),
     clone = require("./common/clone");
 
-var defaults = {};
+let defaults = {};
 
 defaults.container = {
     "display": "block",

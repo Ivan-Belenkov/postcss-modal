@@ -2,7 +2,9 @@
  * Created by Ivan on 09.10.2016.
  */
 
-var postcss = require("postcss");
+var postcss = require("postcss"),
+    objToRule = require("./common/obj-to-rule"),
+    clone = require("./common/clone");
 
 var defaults = {};
 

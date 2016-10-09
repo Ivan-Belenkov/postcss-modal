@@ -1,12 +1,13 @@
 /**
  * Created by Ivan on 09.10.2016.
  */
+"use strict";
 
-var postcss = require("postcss"),
+let postcss = require("postcss"),
     objToRule = require("./common/obj-to-rule"),
     clone = require("./common/clone");
 
-var defaults = {};
+let defaults = {};
 
 defaults.container = {
     "display": "block",
@@ -36,7 +37,8 @@ defaults.child = {
     "vertical-align": "middle",
     "max-height": "100%",
     "overflow-x": "hidden",
-    "overflow-y": "auto"
+    "overflow-y": "auto",
+    "white-space": "normal"
 };
 
 module.exports = postcss.plugin("postcss-modal", plugin);
@@ -44,9 +46,46 @@ module.exports = postcss.plugin("postcss-modal", plugin);
 function plugin() {
     return function(css, result) {
         css.walkDecls("display", function(decl) {
+            let configuration = {};
+
             if (decl.value !== "modal") return;
 
-
+            processConfiguration(decl.parent, decl, configuration);
+            createRules(decl.parent, configuration);
         });
     }
+}
+
+function processConfiguration(rule, declaration, configuration) {
+    let selectors = [];
+
+    configuration.container = clone(defaults.container);
+    configuration.child = clone(defaults.child);
+    configuration.child.source = declaration.source;
+    configuration.pseudo = clone(defaults.pseudo);
+    configuration.pseudo.source = declaration.source;
+
+    for (let i = 0; i < rule.selectors.length; i++) {
+        selectors.push(rule.selectors[i] + " > *");
+    }
+
+    configuration.child.selector = selectors.join(", ");
+
+    selectors = [];
+
+    for (let i = 0; i < rule.selectors.length; i++) {
+        selectors.push(rule.selectors[i] + ":before");
+    }
+
+    configuration.pseudo.selector = selectors.join(", ");
+}
+
+function createRules(rule, configuration) {
+    let parent = rule.parent,
+        pseudo = objToRule(configuration.pseudo),
+        child = objToRule(configuration.child);
+
+    objToRule(configuration.container, rule);
+    parent.insertAfter(rule, child);
+    parent.insertAfter(rule, pseudo);
 }

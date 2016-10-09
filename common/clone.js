@@ -1,4 +1,5 @@
-var clone = function(obj) {
+"use strict";
+let clone = function(obj) {
     return JSON.parse(JSON.stringify(obj));
 };
 

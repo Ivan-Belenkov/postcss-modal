@@ -44,7 +44,7 @@ defaults.child = {
 module.exports = postcss.plugin("postcss-modal", plugin);
 
 function plugin() {
-    return function(css, result) {
+    return function(css) {
         css.walkDecls("display", function(decl) {
             let configuration = {};
 

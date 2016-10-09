@@ -4,7 +4,7 @@ let postcss = require("postcss");
 // Convert a js obj to a postcss rule, extending clonedRule if it is passed in.
 let objToRule = function(obj, clonedRule) {
     let rule = clonedRule || postcss.rule();
-    let skipKeys = ['selector', 'selectors', 'source'];
+    let skipKeys = ["selector", "selectors", "source"];
 
     if(obj.selector)
         rule.selector = obj.selector;
